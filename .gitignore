@@ -38,3 +38,5 @@ Icon?
 /.cake_task_cache
 
 /example
+
+config.json
