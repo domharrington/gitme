@@ -30,6 +30,9 @@
     "test": "mocha -r should -R List",
     "prepublish": "npm prune"
   },
+  "bin": {
+    "gitme": "./bin/gitme"
+  },
   "engines": {
     "node": ">= 0.4.6 < 0.7.0"
   }
