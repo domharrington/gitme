@@ -1,0 +1,39 @@
+#!/usr/bin/env node
+var program = require('commander')
+  , gitme = require('../lib');
+
+program
+  .version('0.0.1')
+  .option('add [repo-location]', 'Add a repository')
+  .option('rm [repo-location]', 'Remove a repository')
+  .option('ls', 'List all repository')
+  .option('-n, --number [number]', 'Number of commits to show for each repo', 10)
+  .parse(process.argv);
+
+function output(error, success) {
+  if (error) {
+    return console.error(error.message);
+  }
+
+  console.log(success);
+}
+
+if (program.add) {
+  gitme.addRepo(program.add, function(error, success) {
+    output(error, success);
+  });
+} else if (program.rm) {
+  gitme.removeRepo(program.rm, function(error, success) {
+    output(error, success);
+  });
+} else if (program.ls) {
+  gitme.listRepos(function(error, repos) {
+    output(error, repos.join('\n'));
+  });
+} else {
+  gitme.getCommits({
+    number: program.number
+  }, function(error) {
+    output(error);
+  });
+}
