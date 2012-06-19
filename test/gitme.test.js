@@ -3,7 +3,6 @@ var should = require('should')
   , fs = require('fs')
   , gitme = require('../lib/index')
   , testRepoFolder = __dirname + '/test-repo-folder'
-  , binLocation = __dirname + '/../bin/gitme'
   , configLocation = __dirname + '/../config.json';
 
 function addRepo(repo, callback) {
