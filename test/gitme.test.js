@@ -15,9 +15,8 @@ function addRepo(repo, callback) {
 }
 
 function removeConfig(callback) {
-  exec('rm -rf ' + configLocation, function() {
-    callback();
-  });
+  delete require.cache[require('path').resolve(configLocation)];
+  exec('rm -rf ' + configLocation, callback);
 }
 
 describe('gitme', function() {
