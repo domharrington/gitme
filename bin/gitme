@@ -3,7 +3,7 @@ var program = require('commander')
   , gitme = require('../lib');
 
 program
-  .version('0.0.1')
+  .version('0.0.2')
   .option('add [repo-location]', 'Add a repository')
   .option('rm [repo-location]', 'Remove a repository')
   .option('ls', 'List all repository')
