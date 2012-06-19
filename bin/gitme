@@ -27,9 +27,7 @@ if (program.add) {
     output(error, success);
   });
 } else if (program.ls) {
-  gitme.listRepos(function(error, repos) {
-    output(error, repos.join('\n'));
-  });
+  output(null, gitme.listRepos().join('\n'));
 } else {
   gitme.getCommits({
     number: program.number
