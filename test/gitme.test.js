@@ -104,11 +104,11 @@ describe('gitme', function() {
       addRepo('a', function() {
         addRepo('b', function() {
           addRepo('c', function() {
-            gitme.listRepos(function(error, repos) {
-              repos.should.be.an.instanceof(Array);
-              repos.length.should.equal(3);
-              done();
-            });
+            var repos = gitme.listRepos();
+
+            repos.should.be.an.instanceof(Array);
+            repos.length.should.equal(3);
+            done();
           });
         });
       });
