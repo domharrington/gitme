@@ -24,11 +24,21 @@ describe('gitme', function() {
 
   before(removeConfig);
 
+  // These two tests are noticably slower than the rest due to spawning
+  // a child process
   describe('CLI', function() {
 
     it('should display the correct version', function(done) {
       exec(__dirname + '/../bin/gitme --version', function(error, stdout) {
         stdout.split('\n')[0].should.equal(require(__dirname + '/../package.json').version);
+        done();
+      });
+    });
+
+    it('should display no error when calling ls with no config file', function(done) {
+      exec(__dirname + '/../bin/gitme ls', function(error, stdout, stderr) {
+        stderr.should.equal('');
+        stdout.should.equal('\n');
         done();
       });
     });
