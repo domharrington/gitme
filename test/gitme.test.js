@@ -24,6 +24,17 @@ describe('gitme', function() {
 
   before(removeConfig);
 
+  describe('CLI', function() {
+
+    it('should display the correct version', function(done) {
+      exec(__dirname + '/../bin/gitme --version', function(error, stdout) {
+        stdout.split('\n')[0].should.equal(require(__dirname + '/../package.json').version);
+        done();
+      });
+    });
+
+  });
+
   describe('#addRepo()', function() {
 
     it('should add a repo to config', function(done) {
