@@ -7,10 +7,10 @@
     "Dom Harrington <dom.harrington@clock.co.uk>"
   ],
   "dependencies": {
-    "async": ">= 0.1.9 < 0.2.0",
-    "colors": "0.6.0-1",
-    "underscore": "1.3.3",
-    "commander": "0.6.0",
+    "async": "~0.1.22",
+    "colors": "~0.6.0-1",
+    "underscore": "~1.3.3",
+    "commander": "0.6.1",
     "gitlog": "0.0.1"
   },
   "devDependencies": {
@@ -35,7 +35,7 @@
     "gitme": "./bin/gitme"
   },
   "engines": {
-    "node": ">= 0.4.6 < 0.7.0"
+    "node": ">= 0.4.6 < 0.9.0"
   },
   "preferGlobal": true
 }
