@@ -1,8 +1,9 @@
 # gitme
 
-A command line tool to see your git commits across multiple projects
+A command line tool to see your git commits across multiple projects. This tool is written using Node.js, so Node must be installed to use it.
 
 ## Installation
+Installing is done through NPM (Node Package Manager) as follows:
 
      npm install -g gitme
 
@@ -11,7 +12,7 @@ View commits for multiple repos:
 
      gitme
 
-Add some repos:
+Add a repo:
 
      gitme add [repo-location]
 
@@ -26,3 +27,6 @@ List all repos:
 View help:
 
      gitme --help
+
+## Parsing the git log
+If you are looking for a module for parsing the git log in Node, you should look at [node-gitlog](https://github.com/domharrington/node-gitlog), which is what this module uses.
