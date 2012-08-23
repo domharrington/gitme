@@ -1,3 +1,4 @@
+[![build status](https://secure.travis-ci.org/domharrington/gitme.png)](http://travis-ci.org/domharrington/gitme)
 # gitme
 
 A command line tool to see your git commits across multiple projects. This tool is written using Node.js, so Node must be installed to use it.
