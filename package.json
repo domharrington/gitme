@@ -28,8 +28,8 @@
   },
   "main": "index",
   "scripts": {
-    "test": "mocha -r should -R List",
     "prepublish": "npm prune"
+    "test": "mocha -r should",
   },
   "bin": {
     "gitme": "./bin/gitme"
