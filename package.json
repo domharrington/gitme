@@ -29,7 +29,7 @@
   "main": "index",
   "scripts": {
     "prepublish": "npm prune",
-    "test": "mocha -r should",
+    "test": "mocha -r should"
   },
   "bin": {
     "gitme": "./bin/gitme"
