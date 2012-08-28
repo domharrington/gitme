@@ -28,7 +28,7 @@
   },
   "main": "index",
   "scripts": {
-    "prepublish": "npm prune"
+    "prepublish": "npm prune",
     "test": "mocha -r should",
   },
   "bin": {
