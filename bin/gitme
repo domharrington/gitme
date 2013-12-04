@@ -8,6 +8,7 @@ program
   .option('rm [repo-location]', 'Remove a repository')
   .option('ls', 'List all repository')
   .option('-n, --number [number]', 'Number of commits to show for each repo', 10)
+  .option('-c, --colour [bool]', 'False to not display colour', 'true')
   .parse(process.argv);
 
 function output(error, success) {
@@ -30,7 +31,8 @@ if (program.add) {
   output(null, gitme.listRepos().join('\n'));
 } else {
   gitme.getCommits({
-    number: program.number
+    number: program.number,
+    colour: program.colour
   }, function(error) {
     output(error);
   });
