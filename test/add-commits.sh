@@ -1,8 +1,8 @@
 #!/bin/bash
 touch file
-for i in {1..30}
+for i in $(eval echo {1..$1})
 do
-  echo change >> ./file
+  echo $i >> ./file
   git add file
   git commit -m 'Updated file'
 done
