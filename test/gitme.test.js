@@ -128,7 +128,7 @@ describe('gitme', function() {
     })
 
     it('adding a repo should create the config file if it doesnt exist', function(done) {
-      fs.stat(configLocation, function(error, stat) {
+      fs.stat(configLocation, function(error) {
         error.code.should.equal('ENOENT')
         addRepo('add-repo-create-config', function(error, success) {
           success.should.equal(successMessage)
@@ -142,7 +142,7 @@ describe('gitme', function() {
 
     it('should not add a repo that is already in the config', function(done) {
       addRepo('already-in-config', function() {
-        addRepo('already-in-config', function(error) {
+        addRepo('already-in-config', function() {
           var repos = require('../config.json').repos
           assert.equal(repos.length, 1)
           done()
@@ -185,7 +185,7 @@ describe('gitme', function() {
     })
 
     it('should return an error if the config file doesnt exist', function(done) {
-      gitme.removeRepo('fake-folder-path', function(error, success) {
+      gitme.removeRepo('fake-folder-path', function(error) {
         error.should.be.an.instanceof(Error)
         error.message.should.equal('Config file doesnt exist')
         done()
@@ -194,7 +194,7 @@ describe('gitme', function() {
 
     it('should return an error if the folder to delete isnt in the config', function(done) {
       addRepo('this-doesnt-matter', function() {
-        gitme.removeRepo('fake-folder-path', function(error, success) {
+        gitme.removeRepo('fake-folder-path', function(error) {
           error.should.be.an.instanceof(Error)
           error.message.should.equal('Repo doesnt exist in config')
           done()
