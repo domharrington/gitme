@@ -2,6 +2,7 @@ var assert = require('assert')
   , async = require('async')
   , rimraf = require('rimraf')
   , _ = require('underscore')
+  , colours = require('colors')
   , exec = require('child_process').exec
   , execFile = require('child_process').execFile
   , fs = require('fs')
@@ -49,7 +50,7 @@ function tidyUp(callback) {
 }
 
 describe('gitme', function() {
-  var successMessage = 'Repos successfully added!'
+  var successMessage = 'Repos successfully added!'.green
 
   before(tidyUp)
 
@@ -178,7 +179,7 @@ describe('gitme', function() {
     it('should remove a repo from config when used with "rm"', function(done) {
       addRepo('remove-config', function() {
         gitme.removeRepo('remove-config', function(error, success) {
-          success.should.equal('Repo successfully deleted!')
+          success.should.equal('Repo successfully deleted!'.green)
           done()
         })
       })
