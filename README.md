@@ -33,5 +33,5 @@ View help:
 If you are looking for a module for parsing the git log in Node, you should look at [node-gitlog](https://github.com/domharrington/node-gitlog), which is what this module uses.
 
 ### Contributors
-Dom Harrington (https://github.com/domharrington/)[domharrington]
-Nick Price (https://github.com/nicholasjohn/)[nicholasjohn]
+Dom Harrington [https://github.com/domharrington/](domharrington)
+Nick Price [https://github.com/nicholasjohn/](nicholasjohn)
