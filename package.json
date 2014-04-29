@@ -1,10 +1,11 @@
 {
   "name": "gitme",
   "description": "A command line tool to see your git commits across multiple projects",
-  "version": "0.0.6",
+  "version": "0.1.0",
   "author": "Dom Harrington <dom.harrington@clock.co.uk>",
   "contributors": [
-    "Dom Harrington <dom.harrington@clock.co.uk>"
+    "Dom Harrington <dom.harrington@clock.co.uk>",
+    "Nick Price <nick.price@clock.co.uk>"
   ],
   "dependencies": {
     "async": "~0.1.22",
