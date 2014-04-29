@@ -1,28 +1,42 @@
-var should = require('should')
+var assert = require('assert')
+  , async = require('async')
+  , _ = require('underscore')
   , exec = require('child_process').exec
+  , execFile = require('child_process').execFile
   , fs = require('fs')
   , gitme = require('../lib/index')
-  , testRepoFolder = __dirname + '/test-repo-folder'
-  , configLocation = __dirname + '/../config.json';
+  , configLocation = __dirname + '/../config.json'
+  , createdFolders = [];
 
 function addRepo(repo, callback) {
-  if (typeof callback === 'undefined') {
-    callback = repo;
-    repo = testRepoFolder;
-  }
+  try { fs.mkdirSync(repo) } catch(e) {}
 
-  gitme.addRepo(repo, callback);
+  exec('cd ' + repo + ' && git init', function (err) {
+    if (err) return callback(err)
+    createdFolders.push(repo)
+    gitme.addRepo(repo, callback);
+  })
 }
 
-function removeConfig(callback) {
+function createCommits(repo, callback) {
+  execFile(__dirname + '/add-commits.sh', [], { cwd: repo }, callback)
+}
+
+function tidyUp(callback) {
   delete require.cache[require('path').resolve(configLocation)];
-  exec('rm -rf ' + configLocation, callback);
+  exec('rm -rf ' + configLocation, function (err) {
+    if (err) return callback(err)
+
+    async.forEach(createdFolders, function (folder, next) {
+      exec('rm -rf ' + folder, next)
+    }, callback)
+  });
 }
 
 describe('gitme', function() {
-  var successMessage = 'Repo successfully added!';
+  var successMessage = 'Repos successfully added!';
 
-  before(removeConfig);
+  before(tidyUp);
 
   // These two tests are noticably slower than the rest due to spawning
   // a child process
@@ -45,10 +59,51 @@ describe('gitme', function() {
 
   });
 
+  describe('#getCommits()', function () {
+
+    it('should default to returning 10 commits', function (done) {
+      addRepo('10-commits', function (err) {
+        if (err) return done(err)
+
+        createCommits('10-commits', function (err) {
+          if (err) return done(err)
+
+          exec(__dirname + '/../bin/gitme', function(error, stdout) {
+
+            assert.equal(_.compact(stdout.split('\n')).length, 10)
+            done();
+          });
+
+        })
+      })
+    })
+
+    it('should allow overriding of number of commits', function (done) {
+      addRepo('20-commits', function (err) {
+        if (err) return done(err)
+
+        createCommits('20-commits', function (err) {
+          if (err) return done(err)
+
+          exec(__dirname + '/../bin/gitme -n 20', function(error, stdout) {
+            assert.equal(_.compact(stdout.split('\n')).length, 20)
+            done();
+          });
+
+        })
+      })
+    })
+
+    it('should return an error if there are no repos in the config')
+
+  })
+
   describe('#addRepo()', function() {
 
-    it('should add a repo to config', function(done) {
-      addRepo(function(error, success) {
+    it('should add the cwd if no folder provided')
+
+    it('should add a repo to config when provided', function(done) {
+      addRepo('add-repo-to-config', function(error, success) {
         success.should.equal(successMessage);
         done();
       });
@@ -57,7 +112,7 @@ describe('gitme', function() {
     it('adding a repo should create the config file if it doesnt exist', function(done) {
       fs.stat(configLocation, function(error, stat) {
         error.code.should.equal('ENOENT');
-        addRepo(function(error, success) {
+        addRepo('add-repo-create-config', function(error, success) {
           success.should.equal(successMessage);
           fs.stat(configLocation, function(error, stat) {
             stat.isFile().should.equal(true);
@@ -68,30 +123,32 @@ describe('gitme', function() {
     });
 
     it('should not add a repo that is already in the config', function(done) {
-      addRepo(function() {
-        addRepo(function(error, success) {
-          error.should.be.an.instanceof(Error);
-          error.message.should.equal('Repo already added!');
+      addRepo('already-in-config', function() {
+        addRepo('already-in-config', function(error) {
+          var repos = require('../config.json').repos
+          assert.equal(repos.length, 1)
           done();
         });
       });
     });
 
-    it('should return an error when no folder name is given', function(done) {
-      addRepo('', function(error, success) {
+    it.skip('should return an error when no folder name is given', function(done) {
+      addRepo('', function(error) {
         error.should.be.an.instanceof(Error);
         error.message.should.equal('You must provide a git repo');
         done();
       });
     });
 
+    it('should recursively search the folder structure for git repos');
+
   });
 
   describe('#removeRepo()', function() {
 
     it('should remove a repo from config when used with "rm"', function(done) {
-      addRepo(function() {
-        gitme.removeRepo(testRepoFolder, function(error, success) {
+      addRepo('remove-config', function() {
+        gitme.removeRepo('remove-config', function(error, success) {
           success.should.equal('Repo successfully deleted!');
           done();
         });
@@ -107,7 +164,7 @@ describe('gitme', function() {
     });
 
     it('should return an error if the folder to delete isnt in the config', function(done) {
-      addRepo(function() {
+      addRepo('this-doesnt-matter', function() {
         gitme.removeRepo('fake-folder-path', function(error, success) {
           error.should.be.an.instanceof(Error);
           error.message.should.equal('Repo doesnt exist in config');
@@ -136,6 +193,6 @@ describe('gitme', function() {
 
   });
 
-  afterEach(removeConfig);
+  afterEach(tidyUp);
 
 });

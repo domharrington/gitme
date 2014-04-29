@@ -20,6 +20,9 @@ function output(error, success) {
 }
 
 if (program.add) {
+  gitme.on('add', function (folder) {
+    output(null, folder)
+  })
   gitme.addRepo(program.add, function(error, success) {
     output(error, success);
   });
