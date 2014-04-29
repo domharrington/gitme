@@ -18,6 +18,15 @@ function addRepo(repo, callback) {
     gitme.addRepo(repo, callback)
   })
 }
+function addFolder(path, callback) {
+  try { fs.mkdirSync(path) } catch(e) {}
+
+  exec('cd ' + path, function (err) {
+    if (err) return callback(err)
+    createdFolders.push(path)
+    gitme.addRepo(path, callback)
+  })
+}
 
 function createCommits(repo, callback, num) {
   num = num || 20
@@ -100,7 +109,12 @@ describe('gitme', function() {
       })
     })
 
-    it('should return an error if there are no repos in the config')
+    it('should return an error if there are no repos in the config and the cwd is not a repo', function (done) {
+      addFolder('non-repo', function (err) {
+        err.should.equal(err, 'Error: You must provide a git repo')
+        done()
+      })
+    })
 
   })
 
