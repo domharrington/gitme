@@ -120,8 +120,6 @@ describe('gitme', function() {
 
   describe('#addRepo()', function() {
 
-    it('should add the cwd if no folder provided')
-
     it('should add a repo to config when provided', function(done) {
       addRepo('add-repo-to-config', function(error, success) {
         success.should.equal(successMessage)
@@ -152,10 +150,10 @@ describe('gitme', function() {
       })
     })
 
-    it.skip('should return an error when no folder name is given', function(done) {
-      addRepo('', function(error) {
-        error.should.be.an.instanceof(Error)
-        error.message.should.equal('You must provide a git repo')
+    it('should add the cwd if no folder provided', function (done) {
+      addRepo('', function() {
+        var repos = require('../config.json').repos
+        assert.equal(repos.length, 1)
         done()
       })
     })
