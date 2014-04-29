@@ -4,7 +4,7 @@ var program = require('commander')
 
 program
   .version(require(__dirname + '/../package.json').version)
-  .option('add [repo-location]', 'Add a repository')
+  .option('add [repo-location]', 'Add a repository. Leave blank to search this directory for all git repositories.')
   .option('rm [repo-location]', 'Remove a repository')
   .option('ls', 'List all repository')
   .option('-n, --number [number]', 'Number of commits to show for each repo', 10)
