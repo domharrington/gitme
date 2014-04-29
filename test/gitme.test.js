@@ -2,7 +2,6 @@ var assert = require('assert')
   , async = require('async')
   , rimraf = require('rimraf')
   , _ = require('underscore')
-  , colours = require('colors')
   , exec = require('child_process').exec
   , execFile = require('child_process').execFile
   , fs = require('fs')
@@ -10,8 +9,10 @@ var assert = require('assert')
   , configLocation = __dirname + '/../config.json'
   , createdFolders = []
 
+require('colors')
+
 function addRepo(repo, callback) {
-  try { fs.mkdirSync(repo) } catch(e) {}
+  try { fs.mkdirSync(repo) } catch (e) {}
 
   exec('cd ' + repo + ' && git init', function (err) {
     if (err) return callback(err)
@@ -20,7 +21,7 @@ function addRepo(repo, callback) {
   })
 }
 function addFolder(path, callback) {
-  try { fs.mkdirSync(path) } catch(e) {}
+  try { fs.mkdirSync(path) } catch (e) {}
 
   exec('cd ' + path, function (err) {
     if (err) return callback(err)
