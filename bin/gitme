@@ -4,10 +4,11 @@ var program = require('commander')
 
 program
   .version(require(__dirname + '/../package.json').version)
-  .option('add [repo-location]', 'Add a repository')
+  .option('add [repo-location]', 'Add a repository. Leave blank to search this directory for all git repositories.')
   .option('rm [repo-location]', 'Remove a repository')
   .option('ls', 'List all repository')
   .option('-n, --number [number]', 'Number of commits to show for each repo', 10)
+  .option('-c, --colour [bool]', 'False to not display colour', 'true')
   .parse(process.argv);
 
 function output(error, success) {
@@ -19,6 +20,9 @@ function output(error, success) {
 }
 
 if (program.add) {
+  gitme.on('add', function (folder) {
+    output(null, folder)
+  })
   gitme.addRepo(program.add, function(error, success) {
     output(error, success);
   });
@@ -30,7 +34,8 @@ if (program.add) {
   output(null, gitme.listRepos().join('\n'));
 } else {
   gitme.getCommits({
-    number: program.number
+    number: program.number,
+    colour: program.colour
   }, function(error) {
     output(error);
   });
